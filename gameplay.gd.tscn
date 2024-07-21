@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://chm7lsmrtbteh"]
+
+[ext_resource type="Script" path="res://gameplay.gd" id="1_s5vj1"]
+[ext_resource type="Texture2D" uid="uid://bu82ioq1ewcy1" path="res://Cowboy.png" id="2_fq50v"]
+
+[node name="gameplay" type="Node"]
+script = ExtResource("1_s5vj1")
+
+[node name="countdown" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="p1" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-192, 0)
+texture = ExtResource("2_fq50v")
+offset = Vector2(0, -64)
+hframes = 2
+vframes = 2
+
+[node name="p2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(192, 0)
+texture = ExtResource("2_fq50v")
+offset = Vector2(0, -64)
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="camera" type="Camera2D" parent="."]
+position = Vector2(0, -128)
+
+[node name="game_over" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="restart" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="countdown" to="." method="_on_countdown_timeout"]
+[connection signal="timeout" from="game_over" to="." method="_on_game_over_timeout"]
+[connection signal="timeout" from="restart" to="." method="_on_restart_timeout"]
