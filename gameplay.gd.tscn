@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://chm7lsmrtbteh"]
-
-[ext_resource type="Script" path="res://game.gd" id="1_ef1b0"]
-[ext_resource type="PackedScene" uid="uid://crcs8y3syh13x" path="res://Cowboy.glb" id="2_6hul1"]
-
-[node name="Gameplay" type="Node"]
-script = ExtResource("1_ef1b0")
-
-[node name="Cowboy" parent="." instance=ExtResource("2_6hul1")]
