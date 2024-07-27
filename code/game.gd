@@ -22,6 +22,11 @@ var action_playing = false
 @export var fire_effects = []
 @export var hammer_effects = []
 @export var dodge_effect = []
+@export var thud_effect = []
+
+@export var t_timer = 0.75
+var timed = false
+
 
 func _ready():
 	fire_effects = [
@@ -35,6 +40,7 @@ func _ready():
 		preload("res://assets/sfx/hammer/hammer_3.mp3"),
 	]
 	dodge_effect = [ preload("res://assets/sfx/dodge.mp3") ]
+	thud_effect = [ preload("res://assets/sfx/thud.mp3") ]
 
 func _process(_delta):
 	_get_input("1")
@@ -42,6 +48,18 @@ func _process(_delta):
 	
 	_animate("1")
 	_animate("2")
+	
+	if !timed: _flip()
+
+func _flip():
+	timed = true
+	await get_tree().create_timer(t_timer).timeout
+	
+	$environment_bg/sun.flip_h = !$environment_bg/sun.flip_h
+	$environment_bg/ground_d.flip_h = !$environment_bg/ground_d.flip_h
+	$environment_bg/sky_d.flip_h = !$environment_bg/sky_d.flip_h
+	
+	timed = false
 
 func _animate(p_num):
 	var s
@@ -79,7 +97,7 @@ func _get_input(p_num):
 				p_action = p_num+"_fire"
 				_cooldown(p_num, p_action)
 				
-				if action == "":	action = p_action
+				if action == "": action = p_action
 				
 			elif Input.is_action_just_pressed(p_num+"_dodge"):
 				print (p_num + " dodged")
@@ -90,14 +108,11 @@ func _get_input(p_num):
 				p_action = p_num+"_dodge"
 				_cooldown(p_num, p_action)
 				
-				if action == "":	action = p_action
+				if action == "": action = p_action
 			
 			elif Input.is_action_just_pressed(p_num+"_fire"):
 				_sfx_play(hammer_effects)
-	
-	#if action != "" and !action_playing:
-	#	_showdown()	
-
+				
 func _sfx_play(sfx):
 	var player = AudioStreamPlayer2D.new()
 	add_child(player)
@@ -110,32 +125,48 @@ func _sfx_play(sfx):
 func _cooldown(p_num, p_action):
 	p_cooldown[p_num] = true
 	
-	await get_tree().create_timer(t_window).timeout
-	
-	if action != "" and !action_playing:
+	if !action_playing:
+		action_playing = true
+		
+		await get_tree().create_timer(t_window).timeout
+		
 		match action:
 			"1_fire":
+				print (action)
 				if p["2"] != p_status.dodged:	_hit("2", "1")
 			"2_fire":
+				print (action)
 				if p["1"] != p_status.dodged:	_hit("1", "2")
 			
 			"1_dodge":
+				print (action)
 				if p["2"] == p_status.fired:	_hit("1", "2")
 			"2_dodge":
+				print (action)
 				if p["1"] == p_status.fired:	_hit("2", "1")
+		
+		action_playing = false
 	
 	await get_tree().create_timer(t_cooldown - t_window).timeout
 	
 	if !game_over:
 		if p_ammo[p_num] == 0:
-			p[p_num] = p_status.empty
-			
 			game_over = true
-			
 			await get_tree().create_timer(t_cooldown).timeout
+			
+			var w_id
+			
+			if p_num == "1": w_id = "2"
+			else: w_id = "1"
+			
+			p_score[w_id] += 1
+			p[w_id] = p_status.idle
+			
+			p[p_num] = p_status.empty
 			print (p_num + " is out")
 			
 			_game_over()
+			
 			return
 		
 		p_cooldown[p_num] = false
@@ -147,17 +178,20 @@ func _cooldown(p_num, p_action):
 		action_playing = false
 
 func _hit(p_num, w_id):
-	game_over = true
-	
-	p_score[w_id] += 1
-	
-	await get_tree().create_timer(t_cooldown).timeout
-	print (p_num + " is dead")
-	
-	p[p_num] = p_status.dead
-	_game_over()
+	if !game_over:
+		game_over = true
+		p_score[w_id] += 1
+		
+		await get_tree().create_timer(t_cooldown).timeout
+		print (p_num + " is dead")
+		
+		p[p_num] = p_status.dead
+		
+		_game_over()
 
 func _game_over():
+	_sfx_play(thud_effect)
+	
 	await get_tree().create_timer(t_fade).timeout
 	
 	$score.text = str(p_score["1"]) + " - " + str(p_score["2"])

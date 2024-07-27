@@ -1,19 +1,22 @@
-[gd_scene load_steps=18 format=3 uid="uid://chm7lsmrtbteh"]
+[gd_scene load_steps=21 format=3 uid="uid://chm7lsmrtbteh"]
 
 [ext_resource type="Script" path="res://code/game.gd" id="1_8mbv1"]
 [ext_resource type="Texture2D" uid="uid://do4cvj6dqciiw" path="res://assets/2d/environment/env_sky.png" id="2_4ukku"]
 [ext_resource type="Texture2D" uid="uid://0nie14onweff" path="res://assets/2d/environment/env_sun.png" id="3_8g53a"]
-[ext_resource type="Script" path="res://code/sun.gd" id="4_3eu5o"]
-[ext_resource type="Texture2D" uid="uid://b3be0aw1fka57" path="res://assets/2d/environment/env_clouds.png" id="5_bwmid"]
+[ext_resource type="Texture2D" uid="uid://cv1ai6dg28wk6" path="res://assets/2d/environment/env_sky_d.png" id="3_suan0"]
+[ext_resource type="Texture2D" uid="uid://byhxkguu3xxy" path="res://assets/2d/environment/clouds/cloud_1.png" id="5_lvcsv"]
 [ext_resource type="Texture2D" uid="uid://dwg3060ltb8cy" path="res://assets/2d/environment/env_ground.png" id="6_dvbg7"]
+[ext_resource type="Texture2D" uid="uid://dfa4qxbu8gamy" path="res://assets/2d/environment/clouds/cloud_2.png" id="6_hamrl"]
 [ext_resource type="Texture2D" uid="uid://bowfoatd0lgc0" path="res://assets/2d/environment/env_backdrop.png" id="7_4kut0"]
+[ext_resource type="Texture2D" uid="uid://cmdq7kk73t56n" path="res://assets/2d/environment/clouds/cloud_3.png" id="7_7cou4"]
 [ext_resource type="Texture2D" uid="uid://b25w4vkk6yjg" path="res://assets/2d/environment/env_grass.png" id="8_oovwd"]
 [ext_resource type="Texture2D" uid="uid://cpq12vml8o75t" path="res://assets/2d/environment/env_flash.png" id="9_4oidt"]
+[ext_resource type="Texture2D" uid="uid://byw6138iiifra" path="res://assets/2d/environment/env_ground_d.png" id="10_cv04f"]
 [ext_resource type="Texture2D" uid="uid://h5ivhbyxndyj" path="res://assets/2d/cowboy.png" id="10_vcmm1"]
 [ext_resource type="Texture2D" uid="uid://dh26cevh08y5t" path="res://assets/2d/fade.png" id="11_go2d0"]
 [ext_resource type="Texture2D" uid="uid://b2j0kuf1gyp8d" path="res://assets/2d/environment/env_bar.png" id="11_w4imi"]
 [ext_resource type="FontFile" uid="uid://ba6m8n7vv6hy2" path="res://assets/fonts/KiwiSoda.ttf" id="12_bqisi"]
-[ext_resource type="AudioStream" uid="uid://c45oac6h88odd" path="res://assets/bgm/Western Streets.mp3" id="13_end7l"]
+[ext_resource type="AudioStream" uid="uid://c5n2d322yig2n" path="res://assets/bgm/two-guns-one-destiny.mp3" id="15_mlag0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_a17q8"]
 font = ExtResource("12_bqisi")
@@ -26,8 +29,6 @@ shadow_size = 0
 
 [node name="gameplay" type="Node"]
 script = ExtResource("1_8mbv1")
-t_flash = 0.075
-fire_effects = [null, null, null]
 
 [node name="camera" type="Camera2D" parent="."]
 
@@ -37,19 +38,38 @@ fire_effects = [null, null, null]
 texture_filter = 1
 texture = ExtResource("2_4ukku")
 
+[node name="sky_d" type="Sprite2D" parent="environment_bg"]
+texture_filter = 1
+texture = ExtResource("3_suan0")
+
 [node name="sun" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
 texture = ExtResource("3_8g53a")
-script = ExtResource("4_3eu5o")
-t_timer = 0.5
 
-[node name="clouds" type="Sprite2D" parent="environment_bg"]
+[node name="clouds" type="Node" parent="environment_bg"]
+
+[node name="cloud_1" type="Sprite2D" parent="environment_bg/clouds"]
 texture_filter = 1
-texture = ExtResource("5_bwmid")
+position = Vector2(-101, -29)
+texture = ExtResource("5_lvcsv")
+
+[node name="cloud_2" type="Sprite2D" parent="environment_bg/clouds"]
+texture_filter = 1
+position = Vector2(2, -44)
+texture = ExtResource("6_hamrl")
+
+[node name="cloud_3" type="Sprite2D" parent="environment_bg/clouds"]
+texture_filter = 1
+position = Vector2(110, -32)
+texture = ExtResource("7_7cou4")
 
 [node name="ground" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
 texture = ExtResource("6_dvbg7")
+
+[node name="ground_d" type="Sprite2D" parent="environment_bg"]
+texture_filter = 1
+texture = ExtResource("10_cv04f")
 
 [node name="backdrop" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
@@ -66,7 +86,7 @@ texture = ExtResource("9_4oidt")
 
 [node name="player_1" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(-116, 13)
+position = Vector2(-115, 13)
 texture = ExtResource("10_vcmm1")
 offset = Vector2(0, 8)
 hframes = 6
@@ -86,17 +106,18 @@ texture_filter = 1
 texture = ExtResource("11_go2d0")
 
 [node name="score" type="Label" parent="."]
-offset_left = -160.0
-offset_top = -90.0
-offset_right = 160.0
-offset_bottom = 90.0
+offset_left = -33.0
+offset_top = -19.0
+offset_right = 33.0
+offset_bottom = 14.0
 text = "0 - 0"
 label_settings = SubResource("LabelSettings_a17q8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="bgm_player" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("13_end7l")
+stream = ExtResource("15_mlag0")
+autoplay = true
 
 [node name="environment_fg" type="Node" parent="."]
 
