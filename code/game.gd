@@ -88,7 +88,7 @@ func _get_input(p_num):
 	if p[p_num] == p_status.idle:
 		if p_cooldown[p_num] == false:
 			if Input.is_action_just_released(p_num+"_fire"):
-				print (p_num + " fired")
+				#print (p_num + " fired")
 				p[p_num] = p_status.flash
 				
 				p_ammo[p_num] -= 1
@@ -100,7 +100,7 @@ func _get_input(p_num):
 				if action == "": action = p_action
 				
 			elif Input.is_action_just_pressed(p_num+"_dodge"):
-				print (p_num + " dodged")
+				#print (p_num + " dodged")
 				p[p_num] = p_status.dodged
 				
 				_sfx_play(dodge_effect)
@@ -132,17 +132,17 @@ func _cooldown(p_num, p_action):
 		
 		match action:
 			"1_fire":
-				print (action)
+				#print (action)
 				if p["2"] != p_status.dodged:	_hit("2", "1")
 			"2_fire":
-				print (action)
+				#print (action)
 				if p["1"] != p_status.dodged:	_hit("1", "2")
 			
 			"1_dodge":
-				print (action)
+				#print (action)
 				if p["2"] == p_status.fired:	_hit("1", "2")
 			"2_dodge":
-				print (action)
+				#print (action)
 				if p["1"] == p_status.fired:	_hit("2", "1")
 		
 		action_playing = false
@@ -163,7 +163,7 @@ func _cooldown(p_num, p_action):
 			p[w_id] = p_status.idle
 			
 			p[p_num] = p_status.empty
-			print (p_num + " is out")
+			#print (p_num + " is out")
 			
 			_game_over()
 			
@@ -183,7 +183,7 @@ func _hit(p_num, w_id):
 		p_score[w_id] += 1
 		
 		await get_tree().create_timer(t_cooldown).timeout
-		print (p_num + " is dead")
+		#print (p_num + " is dead")
 		
 		p[p_num] = p_status.dead
 		
@@ -208,4 +208,4 @@ func _game_over():
 	action_playing = false
 	game_over = false
 	
-	print ("reloaded")
+	#print ("reloaded")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://chm7lsmrtbteh"]
+[gd_scene load_steps=23 format=3 uid="uid://chm7lsmrtbteh"]
 
 [ext_resource type="Script" path="res://code/game.gd" id="1_8mbv1"]
 [ext_resource type="Texture2D" uid="uid://do4cvj6dqciiw" path="res://assets/2d/environment/env_sky.png" id="2_4ukku"]
@@ -17,6 +17,28 @@
 [ext_resource type="Texture2D" uid="uid://b2j0kuf1gyp8d" path="res://assets/2d/environment/env_bar.png" id="11_w4imi"]
 [ext_resource type="FontFile" uid="uid://ba6m8n7vv6hy2" path="res://assets/fonts/KiwiSoda.ttf" id="12_bqisi"]
 [ext_resource type="AudioStream" uid="uid://c5n2d322yig2n" path="res://assets/bgm/two-guns-one-destiny.mp3" id="15_mlag0"]
+
+[sub_resource type="Animation" id="Animation_2d0bf"]
+resource_name = "skew_cacti"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../background_animator/backdrop:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.0872665, 0.0872665, -0.0872665]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jowtq"]
+_data = {
+"skew_cacti": SubResource("Animation_2d0bf")
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_a17q8"]
 font = ExtResource("12_bqisi")
@@ -72,9 +94,17 @@ texture = ExtResource("6_dvbg7")
 texture_filter = 1
 texture = ExtResource("10_cv04f")
 
-[node name="backdrop" type="Sprite2D" parent="environment_bg"]
+[node name="background_animator" type="AnimationPlayer" parent="environment_bg"]
+reset_on_save = false
+root_node = NodePath("../clouds")
+libraries = {
+"": SubResource("AnimationLibrary_jowtq")
+}
+
+[node name="backdrop" type="Sprite2D" parent="environment_bg/background_animator"]
 texture_filter = 1
 position = Vector2(0, 13)
+skew = -0.0197647
 texture = ExtResource("7_4kut0")
 offset = Vector2(0, -13)
 
