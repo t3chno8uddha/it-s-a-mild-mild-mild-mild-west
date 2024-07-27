@@ -29,6 +29,7 @@ shadow_size = 0
 
 [node name="gameplay" type="Node"]
 script = ExtResource("1_8mbv1")
+t_timer = 0.5
 
 [node name="camera" type="Camera2D" parent="."]
 
