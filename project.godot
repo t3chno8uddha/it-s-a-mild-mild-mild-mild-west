@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="GameJim"
+config/name="It's a Mild Mild Mild Mild West"
 run/main_scene="res://nodes/gameplay.gd.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
