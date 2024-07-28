@@ -15,6 +15,7 @@ var game_over = false
 
 var action = ""
 var action_playing = false
+var previous_action = ""
 
 @export var t_window = 0.25
 @export var t_fade = 2
@@ -104,10 +105,9 @@ func _get_input(p_num):
 				_sfx_play(fire_effects)
 				
 				p_action = p_num+"_fire"
-				_cooldown(p_num, p_action)
-				
 				if action == "": action = p_action
 				
+				_cooldown(p_num, p_action)
 			elif Input.is_action_just_pressed(p_num+"_dodge"):
 				#print (p_num + " dodged")
 				p[p_num] = p_status.dodged
@@ -115,13 +115,13 @@ func _get_input(p_num):
 				_sfx_play(dodge_effect)
 				
 				p_action = p_num+"_dodge"
-				_cooldown(p_num, p_action)
 				
 				if action == "": action = p_action
-			
+				
+				_cooldown(p_num, p_action)
 			elif Input.is_action_just_pressed(p_num+"_fire"):
 				_sfx_play(hammer_effects)
-				
+
 func _sfx_play(sfx):
 	var player = AudioStreamPlayer2D.new()
 	add_child(player)
@@ -134,27 +134,26 @@ func _sfx_play(sfx):
 func _cooldown(p_num, p_action):
 	p_cooldown[p_num] = true
 	
-	if !action_playing:
-		action_playing = true
+	if !action_playing && action != "":
+		var previousAction = action
 		
 		await get_tree().create_timer(t_window).timeout
 		
-		match action:
+		match previousAction:
 			"1_fire":
-				#print (action)
+				print ("1_fire")
 				if p["2"] != p_status.dodged:	_hit("2", "1")
 			"2_fire":
-				#print (action)
+				print ("2_fire")
 				if p["1"] != p_status.dodged:	_hit("1", "2")
 			
 			"1_dodge":
-				#print (action)
+				print ("1_dodge")
 				if p["2"] == p_status.fired:	_hit("1", "2")
 			"2_dodge":
-				#print (action)
+				print ("2_dodge")
 				if p["1"] == p_status.fired:	_hit("2", "1")
 		
-		action = ""
 		
 		action_playing = false
 	
@@ -184,8 +183,7 @@ func _cooldown(p_num, p_action):
 		
 		p[p_num] = p_status.idle
 		
-		if p_action == action:
-			action = ""
+		if p_action == action: action = ""
 		action_playing = false
 
 func _hit(p_num, w_id):

@@ -158,7 +158,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="p2_tutorial" type="Label" parent="tutorial"]
-anchors_preset = -1
 offset_top = -100.0
 offset_right = 320.0
 grow_horizontal = 0
@@ -172,7 +171,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="start" type="Label" parent="tutorial"]
-anchors_preset = -1
 offset_left = -320.0
 offset_right = 320.0
 offset_bottom = 100.0
