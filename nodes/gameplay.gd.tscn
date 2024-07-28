@@ -49,6 +49,9 @@ shadow_size = 0
 
 [node name="gameplay" type="Node"]
 script = ExtResource("1_8mbv1")
+t_fade = 2.0
+t_cooldown = 0.25
+t_score = 1.0
 t_timer = 0.5
 
 [node name="camera" type="Camera2D" parent="."]
@@ -57,7 +60,6 @@ t_timer = 0.5
 
 [node name="sky" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
-position = Vector2(1, 0)
 texture = ExtResource("2_4ukku")
 
 [node name="sky_d" type="Sprite2D" parent="environment_bg"]

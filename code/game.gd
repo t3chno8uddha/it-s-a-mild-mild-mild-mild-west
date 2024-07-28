@@ -18,10 +18,10 @@ var action_playing = false
 var previous_action = ""
 
 @export var t_window = 0.25
-@export var t_fade = 2
-@export var t_cooldown = 1
+@export var t_fade = 1.5
+@export var t_cooldown = 0.5
 @export var t_flash = 0.1
-@export var t_score = 2
+@export var t_score = 1.5
 
 @export var fire_effects = []
 @export var hammer_effects = []
@@ -157,7 +157,7 @@ func _cooldown(p_num, p_action):
 		
 		action_playing = false
 	
-	await get_tree().create_timer(t_cooldown - t_window).timeout
+	await get_tree().create_timer(t_cooldown).timeout
 	
 	if !game_over:
 		if p_ammo[p_num] == 0:
