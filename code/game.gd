@@ -1,5 +1,8 @@
 extends Node
 
+var tutorial = true
+var tutorial_closed = false
+
 enum p_status {idle, fired, dodged, dead, flash, empty}
 var p = { "1": p_status.idle, "2": p_status.idle }
 var p_cooldown = { "1": false, "2": false }
@@ -27,7 +30,6 @@ var action_playing = false
 @export var t_timer = 0.75
 var timed = false
 
-
 func _ready():
 	fire_effects = [
 		preload("res://assets/sfx/fire/fire_1.mp3"),
@@ -43,21 +45,28 @@ func _ready():
 	thud_effect = [ preload("res://assets/sfx/thud.mp3") ]
 
 func _process(_delta):
-	_get_input("1")
-	_get_input("2")
-	
-	_animate("1")
-	_animate("2")
+	if !tutorial:
+		_get_input("1")
+		_get_input("2")
+		
+		_animate("1")
+		_animate("2")
+	elif tutorial_closed: 
+		$tutorial.queue_free()
+		tutorial = false 
 	
 	if !timed: _flip()
+	
+	if Input.is_key_pressed(KEY_SPACE): tutorial_closed = true
+	elif Input.is_key_pressed(KEY_ESCAPE): get_tree().quit()
 
 func _flip():
 	timed = true
 	await get_tree().create_timer(t_timer).timeout
 	
 	$environment_bg/sun.flip_h = !$environment_bg/sun.flip_h
-	$environment_bg/ground_d.flip_h = !$environment_bg/ground_d.flip_h
-	$environment_bg/sky_d.flip_h = !$environment_bg/sky_d.flip_h
+	#$environment_bg/ground_d.flip_h = !$environment_bg/ground_d.flip_h
+	#$environment_bg/sky_d.flip_h = !$environment_bg/sky_d.flip_h
 	
 	timed = false
 
@@ -144,6 +153,8 @@ func _cooldown(p_num, p_action):
 			"2_dodge":
 				#print (action)
 				if p["1"] == p_status.fired:	_hit("2", "1")
+		
+		action = ""
 		
 		action_playing = false
 	

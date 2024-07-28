@@ -1,15 +1,13 @@
-[gd_scene load_steps=23 format=3 uid="uid://chm7lsmrtbteh"]
+[gd_scene load_steps=21 format=3 uid="uid://chm7lsmrtbteh"]
 
 [ext_resource type="Script" path="res://code/game.gd" id="1_8mbv1"]
 [ext_resource type="Texture2D" uid="uid://do4cvj6dqciiw" path="res://assets/2d/environment/env_sky.png" id="2_4ukku"]
 [ext_resource type="Texture2D" uid="uid://0nie14onweff" path="res://assets/2d/environment/env_sun.png" id="3_8g53a"]
 [ext_resource type="Texture2D" uid="uid://cv1ai6dg28wk6" path="res://assets/2d/environment/env_sky_d.png" id="3_suan0"]
-[ext_resource type="Texture2D" uid="uid://byhxkguu3xxy" path="res://assets/2d/environment/clouds/cloud_1.png" id="5_lvcsv"]
 [ext_resource type="Texture2D" uid="uid://dwg3060ltb8cy" path="res://assets/2d/environment/env_ground.png" id="6_dvbg7"]
-[ext_resource type="Texture2D" uid="uid://dfa4qxbu8gamy" path="res://assets/2d/environment/clouds/cloud_2.png" id="6_hamrl"]
 [ext_resource type="Texture2D" uid="uid://bowfoatd0lgc0" path="res://assets/2d/environment/env_backdrop.png" id="7_4kut0"]
-[ext_resource type="Texture2D" uid="uid://cmdq7kk73t56n" path="res://assets/2d/environment/clouds/cloud_3.png" id="7_7cou4"]
 [ext_resource type="Texture2D" uid="uid://b25w4vkk6yjg" path="res://assets/2d/environment/env_grass.png" id="8_oovwd"]
+[ext_resource type="Texture2D" uid="uid://ddn0vx41gwxj" path="res://assets/2d/environment/env_clouds.png" id="9_0h1xr"]
 [ext_resource type="Texture2D" uid="uid://cpq12vml8o75t" path="res://assets/2d/environment/env_flash.png" id="9_4oidt"]
 [ext_resource type="Texture2D" uid="uid://byw6138iiifra" path="res://assets/2d/environment/env_ground_d.png" id="10_cv04f"]
 [ext_resource type="Texture2D" uid="uid://h5ivhbyxndyj" path="res://assets/2d/cowboy.png" id="10_vcmm1"]
@@ -18,14 +16,14 @@
 [ext_resource type="FontFile" uid="uid://ba6m8n7vv6hy2" path="res://assets/fonts/KiwiSoda.ttf" id="12_bqisi"]
 [ext_resource type="AudioStream" uid="uid://c5n2d322yig2n" path="res://assets/bgm/two-guns-one-destiny.mp3" id="15_mlag0"]
 
-[sub_resource type="Animation" id="Animation_2d0bf"]
-resource_name = "skew_cacti"
+[sub_resource type="Animation" id="Animation_ms03n"]
+resource_name = "cacti_sway"
 length = 4.0
 loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../background_animator/backdrop:skew")
+tracks/0/path = NodePath("environment_bg/cacti_animator/backdrop:skew")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -35,9 +33,9 @@ tracks/0/keys = {
 "values": [-0.174533, 0.174533]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_jowtq"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ktadt"]
 _data = {
-"skew_cacti": SubResource("Animation_2d0bf")
+"cacti_sway": SubResource("Animation_ms03n")
 }
 
 [sub_resource type="LabelSettings" id="LabelSettings_a17q8"]
@@ -59,6 +57,7 @@ t_timer = 0.5
 
 [node name="sky" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
+position = Vector2(1, 0)
 texture = ExtResource("2_4ukku")
 
 [node name="sky_d" type="Sprite2D" parent="environment_bg"]
@@ -67,24 +66,8 @@ texture = ExtResource("3_suan0")
 
 [node name="sun" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
+position = Vector2(1, 0)
 texture = ExtResource("3_8g53a")
-
-[node name="clouds" type="Node" parent="environment_bg"]
-
-[node name="cloud_1" type="Sprite2D" parent="environment_bg/clouds"]
-texture_filter = 1
-position = Vector2(-101, -29)
-texture = ExtResource("5_lvcsv")
-
-[node name="cloud_2" type="Sprite2D" parent="environment_bg/clouds"]
-texture_filter = 1
-position = Vector2(2, -44)
-texture = ExtResource("6_hamrl")
-
-[node name="cloud_3" type="Sprite2D" parent="environment_bg/clouds"]
-texture_filter = 1
-position = Vector2(110, -32)
-texture = ExtResource("7_7cou4")
 
 [node name="ground" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
@@ -94,24 +77,26 @@ texture = ExtResource("6_dvbg7")
 texture_filter = 1
 texture = ExtResource("10_cv04f")
 
-[node name="background_animator" type="AnimationPlayer" parent="environment_bg"]
-reset_on_save = false
-root_node = NodePath("../clouds")
+[node name="cacti_animator" type="AnimationPlayer" parent="environment_bg"]
+root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_jowtq")
+"": SubResource("AnimationLibrary_ktadt")
 }
-autoplay = "skew_cacti"
+autoplay = "cacti_sway"
 
-[node name="backdrop" type="Sprite2D" parent="environment_bg/background_animator"]
+[node name="backdrop" type="Sprite2D" parent="environment_bg/cacti_animator"]
 texture_filter = 1
-position = Vector2(0, 13)
-skew = -1.56905
+position = Vector2(0, 32)
 texture = ExtResource("7_4kut0")
-offset = Vector2(0, -13)
+offset = Vector2(0, -32)
 
 [node name="grass" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
 texture = ExtResource("8_oovwd")
+
+[node name="clouds" type="Sprite2D" parent="environment_bg"]
+texture_filter = 1
+texture = ExtResource("9_0h1xr")
 
 [node name="flash" type="Sprite2D" parent="."]
 visible = false
@@ -120,16 +105,16 @@ texture = ExtResource("9_4oidt")
 
 [node name="player_1" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(-115, 13)
+position = Vector2(-240, 32)
 texture = ExtResource("10_vcmm1")
-offset = Vector2(0, 8)
+offset = Vector2(0, 20)
 hframes = 6
 
 [node name="player_2" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(116, 13)
+position = Vector2(241, 32)
 texture = ExtResource("10_vcmm1")
-offset = Vector2(0, 8)
+offset = Vector2(0, 20)
 flip_h = true
 hframes = 6
 
@@ -153,6 +138,53 @@ vertical_alignment = 1
 stream = ExtResource("15_mlag0")
 volume_db = -6.0
 autoplay = true
+
+[node name="tutorial" type="Node" parent="."]
+
+[node name="screen" type="Sprite2D" parent="tutorial"]
+modulate = Color(0.313619, 0.199802, 0.199802, 1)
+texture_filter = 1
+texture = ExtResource("11_go2d0")
+
+[node name="p1_tutorial" type="Label" parent="tutorial"]
+offset_left = -320.0
+offset_top = -100.0
+text = "Player 1:
+
+To fire, release 'f'
+To dodge, press 'd'"
+label_settings = SubResource("LabelSettings_a17q8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="p2_tutorial" type="Label" parent="tutorial"]
+anchors_preset = -1
+offset_top = -100.0
+offset_right = 320.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Player 2:
+
+To fire, release 'j'
+To dodge, press 'k'"
+label_settings = SubResource("LabelSettings_a17q8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="start" type="Label" parent="tutorial"]
+anchors_preset = -1
+offset_left = -320.0
+offset_right = 320.0
+offset_bottom = 100.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Dodge after being shot at
+You have six bullets. You run out - you lose
+
+Press 'space' to begin to game, or 'escape' to close it"
+label_settings = SubResource("LabelSettings_a17q8")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="environment_fg" type="Node" parent="."]
 
@@ -193,10 +225,4 @@ texture = SubResource("CompressedTexture2D_pk7ga")
 
 [node name="bars" type="Sprite2D" parent="environment_fg"]
 texture_filter = 1
-position = Vector2(0, 8)
-texture = ExtResource("11_w4imi")
-
-[node name="bars2" type="Sprite2D" parent="environment_fg"]
-texture_filter = 1
-position = Vector2(0, -8)
 texture = ExtResource("11_w4imi")
