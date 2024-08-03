@@ -19,9 +19,11 @@ var previous_action = ""
 
 @export var t_window = 0.25
 @export var t_fade = 1.5
-@export var t_cooldown = 0.5
+@export var t_gunfire = 0.6
+@export var t_dodge = 0.5
 @export var t_flash = 0.1
 @export var t_score = 1.5
+@export var t_death = 0.75
 
 @export var fire_effects = []
 @export var hammer_effects = []
@@ -95,11 +97,18 @@ func _animate(p_num):
 func _get_input(p_num):
 	var p_action = ""
 	
+	var s
+	
+	if p_num == "1": s = $player_1/smoke
+	else: s = $player_2/smoke
+	
 	if p[p_num] == p_status.idle:
 		if p_cooldown[p_num] == false:
 			if Input.is_action_just_released(p_num+"_fire"):
 				#print (p_num + " fired")
 				p[p_num] = p_status.flash
+				
+				s.emitting = true
 				
 				p_ammo[p_num] -= 1
 				_sfx_play(fire_effects)
@@ -107,7 +116,7 @@ func _get_input(p_num):
 				p_action = p_num+"_fire"
 				if action == "": action = p_action
 				
-				_cooldown(p_num, p_action)
+				_cooldown(p_num, p_action, t_gunfire)
 			elif Input.is_action_just_pressed(p_num+"_dodge"):
 				#print (p_num + " dodged")
 				p[p_num] = p_status.dodged
@@ -118,7 +127,7 @@ func _get_input(p_num):
 				
 				if action == "": action = p_action
 				
-				_cooldown(p_num, p_action)
+				_cooldown(p_num, p_action, t_dodge)
 			elif Input.is_action_just_pressed(p_num+"_fire"):
 				_sfx_play(hammer_effects)
 
@@ -131,7 +140,7 @@ func _sfx_play(sfx):
 	player.stream = random_sfx 
 	player.play()
 
-func _cooldown(p_num, p_action):
+func _cooldown(p_num, p_action, p_timer):
 	p_cooldown[p_num] = true
 	
 	if !action_playing && action != "":
@@ -154,15 +163,14 @@ func _cooldown(p_num, p_action):
 				print ("2_dodge")
 				if p["1"] == p_status.fired:	_hit("2", "1")
 		
-		
 		action_playing = false
 	
-	await get_tree().create_timer(t_cooldown).timeout
+	await get_tree().create_timer(p_timer).timeout
 	
 	if !game_over:
 		if p_ammo[p_num] == 0:
 			game_over = true
-			await get_tree().create_timer(t_cooldown).timeout
+			await get_tree().create_timer(t_death   ).timeout
 			
 			var w_id
 			
@@ -174,6 +182,13 @@ func _cooldown(p_num, p_action):
 			
 			p[p_num] = p_status.empty
 			#print (p_num + " is out")
+			
+			var s
+			
+			if p_num == "1": s = $player_1
+			else: s = $player_2
+			
+			s.frame = 5 
 			
 			_game_over()
 			
@@ -191,17 +206,24 @@ func _hit(p_num, w_id):
 		game_over = true
 		p_score[w_id] += 1
 		
-		await get_tree().create_timer(t_cooldown).timeout
+		await get_tree().create_timer(t_death).timeout
 		#print (p_num + " is dead")
 		
 		p[p_num] = p_status.dead
+		
+		var s
+		
+		if p_num == "1": s = $player_1
+		else: s = $player_2
+		
+		s.frame = 3
 		
 		_game_over()
 
 func _game_over():
 	_sfx_play(thud_effect)
 	
-	await get_tree().create_timer(t_fade).timeout
+	await get_tree().create_timer(t_death).timeout
 	
 	$score.text = str(p_score["1"]) + " - " + str(p_score["2"])
 	

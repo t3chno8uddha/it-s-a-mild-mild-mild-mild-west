@@ -1,13 +1,14 @@
-[gd_scene load_steps=21 format=3 uid="uid://chm7lsmrtbteh"]
+[gd_scene load_steps=25 format=3 uid="uid://chm7lsmrtbteh"]
 
 [ext_resource type="Script" path="res://code/game.gd" id="1_8mbv1"]
 [ext_resource type="Texture2D" uid="uid://do4cvj6dqciiw" path="res://assets/2d/environment/env_sky.png" id="2_4ukku"]
 [ext_resource type="Texture2D" uid="uid://0nie14onweff" path="res://assets/2d/environment/env_sun.png" id="3_8g53a"]
 [ext_resource type="Texture2D" uid="uid://cv1ai6dg28wk6" path="res://assets/2d/environment/env_sky_d.png" id="3_suan0"]
+[ext_resource type="Texture2D" uid="uid://b4q2obl25d8bp" path="res://assets/2d/environment/env_clouds_sprites.png" id="5_pxhv6"]
 [ext_resource type="Texture2D" uid="uid://dwg3060ltb8cy" path="res://assets/2d/environment/env_ground.png" id="6_dvbg7"]
 [ext_resource type="Texture2D" uid="uid://bowfoatd0lgc0" path="res://assets/2d/environment/env_backdrop.png" id="7_4kut0"]
+[ext_resource type="Texture2D" uid="uid://ci483yu3vyj86" path="res://assets/2d/environment/env_clouds_dither.png" id="7_jj10x"]
 [ext_resource type="Texture2D" uid="uid://b25w4vkk6yjg" path="res://assets/2d/environment/env_grass.png" id="8_oovwd"]
-[ext_resource type="Texture2D" uid="uid://ddn0vx41gwxj" path="res://assets/2d/environment/env_clouds.png" id="9_0h1xr"]
 [ext_resource type="Texture2D" uid="uid://cpq12vml8o75t" path="res://assets/2d/environment/env_flash.png" id="9_4oidt"]
 [ext_resource type="Texture2D" uid="uid://byw6138iiifra" path="res://assets/2d/environment/env_ground_d.png" id="10_cv04f"]
 [ext_resource type="Texture2D" uid="uid://h5ivhbyxndyj" path="res://assets/2d/cowboy.png" id="10_vcmm1"]
@@ -15,6 +16,12 @@
 [ext_resource type="Texture2D" uid="uid://b2j0kuf1gyp8d" path="res://assets/2d/environment/env_bar.png" id="11_w4imi"]
 [ext_resource type="FontFile" uid="uid://ba6m8n7vv6hy2" path="res://assets/fonts/KiwiSoda.ttf" id="12_bqisi"]
 [ext_resource type="AudioStream" uid="uid://c5n2d322yig2n" path="res://assets/bgm/two-guns-one-destiny.mp3" id="15_mlag0"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j6db2"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 4
+particles_anim_loop = false
 
 [sub_resource type="Animation" id="Animation_ms03n"]
 resource_name = "cacti_sway"
@@ -37,6 +44,12 @@ tracks/0/keys = {
 _data = {
 "cacti_sway": SubResource("Animation_ms03n")
 }
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jn1n7"]
+
+[sub_resource type="Curve" id="Curve_hr2uw"]
+_data = [Vector2(0, 1), 0.0, 0.0521026, 0, 0, Vector2(1, 0), -2.44352, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_a17q8"]
 font = ExtResource("12_bqisi")
@@ -64,6 +77,108 @@ texture = ExtResource("2_4ukku")
 [node name="sky_d" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
 texture = ExtResource("3_suan0")
+
+[node name="clouds_left" type="Sprite2D" parent="environment_bg"]
+self_modulate = Color(0.0312505, 0.0312505, 0.0312505, 1)
+clip_children = 1
+texture_filter = 1
+texture = ExtResource("7_jj10x")
+
+[node name="cloud_particle_left" type="CPUParticles2D" parent="environment_bg/clouds_left"]
+clip_children = 1
+material = SubResource("CanvasItemMaterial_j6db2")
+position = Vector2(-384, -64)
+amount = 4
+lifetime = 40.0
+preprocess = 120.0
+speed_scale = 0.25
+texture = ExtResource("5_pxhv6")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(1, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 5.0
+angular_velocity_min = -0.05
+angular_velocity_max = 0.05
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_max = 2.0
+anim_offset_max = 1.0
+
+[node name="cloud_particle_right" type="CPUParticles2D" parent="environment_bg/clouds_left"]
+material = SubResource("CanvasItemMaterial_j6db2")
+position = Vector2(384, -64)
+amount = 4
+lifetime = 40.0
+preprocess = 120.0
+speed_scale = 0.25
+texture = ExtResource("5_pxhv6")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(-1, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 5.0
+angular_velocity_min = -0.05
+angular_velocity_max = 0.05
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_max = 2.0
+anim_offset_max = 1.0
+
+[node name="clouds_right" type="Sprite2D" parent="environment_bg"]
+self_modulate = Color(0.0312505, 0.0312505, 0.0312505, 1)
+clip_children = 1
+texture_filter = 1
+texture = ExtResource("7_jj10x")
+flip_h = true
+
+[node name="cloud_particle_left" type="CPUParticles2D" parent="environment_bg/clouds_right"]
+material = SubResource("CanvasItemMaterial_j6db2")
+position = Vector2(-384, -64)
+amount = 4
+lifetime = 40.0
+preprocess = 120.0
+speed_scale = 0.25
+texture = ExtResource("5_pxhv6")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(1, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 5.0
+angular_velocity_min = -0.05
+angular_velocity_max = 0.05
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_max = 2.0
+anim_offset_max = 1.0
+
+[node name="cloud_particle_right" type="CPUParticles2D" parent="environment_bg/clouds_right"]
+material = SubResource("CanvasItemMaterial_j6db2")
+position = Vector2(384, -64)
+amount = 4
+lifetime = 40.0
+preprocess = 120.0
+speed_scale = 0.25
+texture = ExtResource("5_pxhv6")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(-1, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 5.0
+angular_velocity_min = -0.05
+angular_velocity_max = 0.05
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_max = 2.0
+anim_offset_max = 1.0
 
 [node name="sun" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
@@ -97,7 +212,7 @@ texture = ExtResource("8_oovwd")
 
 [node name="clouds" type="Sprite2D" parent="environment_bg"]
 texture_filter = 1
-texture = ExtResource("9_0h1xr")
+texture = SubResource("CompressedTexture2D_jn1n7")
 
 [node name="flash" type="Sprite2D" parent="."]
 visible = false
@@ -111,6 +226,21 @@ texture = ExtResource("10_vcmm1")
 offset = Vector2(0, 20)
 hframes = 6
 
+[node name="smoke" type="CPUParticles2D" parent="player_1"]
+position = Vector2(20, -34)
+emitting = false
+lifetime = 0.2
+one_shot = true
+speed_scale = 0.3
+direction = Vector2(0, -1)
+spread = 15.0
+gravity = Vector2(0, -1)
+initial_velocity_min = 50.0
+initial_velocity_max = 75.0
+scale_amount_max = 2.5
+scale_amount_curve = SubResource("Curve_hr2uw")
+color = Color(0.988266, 1, 0.88275, 1)
+
 [node name="player_2" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(241, 32)
@@ -118,6 +248,21 @@ texture = ExtResource("10_vcmm1")
 offset = Vector2(0, 20)
 flip_h = true
 hframes = 6
+
+[node name="smoke" type="CPUParticles2D" parent="player_2"]
+position = Vector2(-20, -34)
+emitting = false
+lifetime = 0.2
+one_shot = true
+speed_scale = 0.3
+direction = Vector2(0, -1)
+spread = 15.0
+gravity = Vector2(0, -1)
+initial_velocity_min = 50.0
+initial_velocity_max = 75.0
+scale_amount_max = 2.5
+scale_amount_curve = SubResource("Curve_hr2uw")
+color = Color(0.988266, 1, 0.88275, 1)
 
 [node name="fade" type="Sprite2D" parent="."]
 visible = false
@@ -140,7 +285,7 @@ stream = ExtResource("15_mlag0")
 volume_db = -6.0
 autoplay = true
 
-[node name="tutorial" type="Node" parent="."]
+[node name="tutorial" type="Node2D" parent="."]
 
 [node name="screen" type="Sprite2D" parent="tutorial"]
 modulate = Color(0.313619, 0.199802, 0.199802, 1)
@@ -175,8 +320,6 @@ vertical_alignment = 1
 offset_left = -320.0
 offset_right = 320.0
 offset_bottom = 100.0
-grow_horizontal = 0
-grow_vertical = 2
 text = "Dodge after being shot at
 You have six bullets. You run out - you lose
 
