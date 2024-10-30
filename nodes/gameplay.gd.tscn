@@ -82,6 +82,7 @@ texture = ExtResource("3_suan0")
 self_modulate = Color(0.0312505, 0.0312505, 0.0312505, 1)
 clip_children = 1
 texture_filter = 1
+position = Vector2(-1, 0)
 texture = ExtResource("7_jj10x")
 
 [node name="cloud_particle_left" type="CPUParticles2D" parent="environment_bg/clouds_left"]
@@ -133,6 +134,7 @@ anim_offset_max = 1.0
 self_modulate = Color(0.0312505, 0.0312505, 0.0312505, 1)
 clip_children = 1
 texture_filter = 1
+position = Vector2(1, 0)
 texture = ExtResource("7_jj10x")
 flip_h = true
 
@@ -203,6 +205,7 @@ autoplay = "cacti_sway"
 [node name="backdrop" type="Sprite2D" parent="environment_bg/cacti_animator"]
 texture_filter = 1
 position = Vector2(0, 32)
+skew = -0.174533
 texture = ExtResource("7_4kut0")
 offset = Vector2(0, -32)
 
