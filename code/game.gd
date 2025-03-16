@@ -117,7 +117,7 @@ func _get_input(p_num):
 				if action == "": action = p_action
 				
 				_cooldown(p_num, p_action, t_gunfire)
-			elif Input.is_action_just_pressed(p_num+"_dodge"):
+			if Input.is_action_just_pressed(p_num+"_dodge"):
 				#print (p_num + " dodged")
 				p[p_num] = p_status.dodged
 				
@@ -128,7 +128,7 @@ func _get_input(p_num):
 				if action == "": action = p_action
 				
 				_cooldown(p_num, p_action, t_dodge)
-			elif Input.is_action_just_pressed(p_num+"_fire"):
+			if Input.is_action_just_pressed(p_num+"_fire"):
 				_sfx_play(hammer_effects)
 
 func _sfx_play(sfx):
