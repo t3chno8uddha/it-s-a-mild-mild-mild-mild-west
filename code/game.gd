@@ -62,6 +62,8 @@ func _process(_delta):
 	
 	if Input.is_key_pressed(KEY_SPACE): tutorial_closed = true
 	elif Input.is_key_pressed(KEY_ESCAPE): get_tree().quit()
+	#elif Input.is_key_pressed(KEY_ESCAPE): get_tree().reload_current_scene()
+	elif Input.is_key_pressed(KEY_R): get_tree().reload_current_scene()
 
 func _flip():
 	timed = true
