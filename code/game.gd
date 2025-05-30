@@ -17,6 +17,8 @@ var action = ""
 var action_playing = false
 var previous_action = ""
 
+@export var bgm : AudioStreamPlayer2D
+
 @export var t_window = 0.25
 @export var t_fade = 1.5
 @export var t_gunfire = 0.6
@@ -56,12 +58,13 @@ func _process(_delta):
 		_animate("2")
 	elif tutorial_closed: 
 		$tutorial.queue_free()
+		bgm.playing = true
 		tutorial = false 
 	
 	if !timed: _flip()
 	
 	if Input.is_key_pressed(KEY_SPACE): tutorial_closed = true
-	elif Input.is_key_pressed(KEY_ESCAPE): get_tree().quit()
+	#elif Input.is_key_pressed(KEY_ESCAPE): get_tree().quit()
 	#elif Input.is_key_pressed(KEY_ESCAPE): get_tree().reload_current_scene()
 	elif Input.is_key_pressed(KEY_R): get_tree().reload_current_scene()
 
