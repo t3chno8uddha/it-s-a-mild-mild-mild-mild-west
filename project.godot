@@ -13,13 +13,13 @@ config_version=5
 config/name="2_smoking_barrels"
 config/description="local pvp duel game at high noon."
 run/main_scene="res://nodes/gameplay.gd.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="uid://b0ygarrb4mps8"
 
 [display]
 
 window/size/viewport_width=640
-window/size/viewport_height=200
+window/size/viewport_height=480
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
@@ -55,4 +55,7 @@ movie_writer/disable_vsync=true
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.313619, 0.199802, 0.199802, 1)

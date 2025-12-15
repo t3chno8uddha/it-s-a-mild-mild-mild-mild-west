@@ -1,0 +1,43 @@
+start = space
+guide = r
+
+a = k
+b = k
+x = k
+y = k
+
+l1 = f
+l2 = f
+l3 = f
+
+r1 = j
+r2 = j
+r3 = j
+
+up = d
+down = d
+left = d
+right = d
+
+#left_analog_up = w
+#left_analog_down = s
+#left_analog_left = a
+#left_analog_right = d
+
+#right_analog_up = end
+#right_analog_down = home
+#right_analog_left = left
+#right_analog_right = right
+
+# Old deadzone code
+deadzone_y = 2100
+deadzone_x = 1900
+mouse_scale = 512
+mouse_delay = 16
+
+# New deadzone code, this will overwrite the above deadzone code behaviour
+# Choices of: axial, radial, scaled_radial, sloped_axial, sloped_scaled_axial, hybrid
+deadzone_mode = scaled_radial
+deadzone = 2000
+deadzone_scale = 8
+deadzone_delay = 16 ## An alias for mouse delay
